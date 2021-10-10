@@ -1,18 +1,16 @@
 #![feature(trait_alias)]
+#![feature(is_sorted)]
 
 mod dihedral;
 mod groups;
 mod alternating;
+mod permutation;
 
 use crate::groups::Group;
 use crate::dihedral::dihedral;
-use crate::alternating::complete_linear;
-use crate::alternating::comp;
-use crate::alternating::Permutation;
+use crate::permutation::permutation;
 
 fn main() {
-    let d: Permutation = [[0,1,2]].map(|x| x.to_vec()).to_vec();
-    dbg!(comp(&d, &d));
     // let z13c = Group {
     //     set: (1..=12).collect::<Vec<usize>>(),
     //     op: Box::new(|x, y| (x * y) % 13),
@@ -63,4 +61,7 @@ fn main() {
     // println!("{:?}", dihedral(4));
     // println!("{:?}", dihedral(4).orders());
 //    even_perms(2);
+    
+    dbg!(permutation(3));
+    dbg!(permutation(3).orders());
 }
