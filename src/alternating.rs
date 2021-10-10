@@ -14,9 +14,23 @@ fn identity(n: usize) -> Permutation {
 
 pub fn even_perms(n: usize) -> Vec<Permutation> {
     let id = identity(n);
-    let transpositions: Vec<Vec<usize>> = (0..n).permutations(2).collect();
+    let transposition_locations: Vec<(usize, usize)> = (0..n).permutations(2).map(|a| (a[0], a[1])).collect();
+    dbg!(&transposition_locations);
+    let transpositions: Vec<Permutation> = transposition_locations.into_iter().map(|(a, b)| {
+        let mut func: Permutation = (0..n).collect();
+        func.swap(a, b);
+        dbg!(&func, a, b);
+        func
+    }).collect();
     dbg!(&transpositions);
-    (0..(n/2)).map(|to_use| transpositions.iter().combinations(n * 2).fold(&id, comp)).collect()
+    let in_n_transpositions = |n: usize| -> Vec<Vec<Permutation>> {
+        transpositions.clone().into_iter().permutations(n).collect()
+    };
+
+    // dbg!(&in_n_transpositions(2));
+    // let a: Vec<Permutation> = 
+    //     (0..(n/2)).map(|n| transpositions.iter().permutations(n * 2)
+    //                    .map(|perm| perm.iter().fold(&id, |state, x| &comp(state, x))).collect()).collect()
     vec![]
 }
 
