@@ -1,6 +1,7 @@
 use crate::groups::Group;
 use itertools::Itertools;
 use std::collections::HashMap;
+use std::iter;
 
 type Permutation = Vec<Vec<usize>>;
 
@@ -13,7 +14,6 @@ fn next_cyclic<T: Copy + Clone>(idx: usize, v: &[T]) -> T {
 }
 
 fn chase(n: usize, sigma: &Permutation) -> usize {
-    dbg!(&n, &sigma);
     if sigma.is_empty() {
         n
     } else {
@@ -25,10 +25,17 @@ fn chase(n: usize, sigma: &Permutation) -> usize {
     }
 }
 
+fn complete_cycle(n: usize, sigma: &Permutation) -> Vec<usize> {
+    iter::once(n).chain((0..).scan(n, |state, _| {
+        *state = chase(*state, &sigma);
+        Some(*state)
+    }).take_while(|x| *x != n)).collect()
+}
+
 // fn comp(n: &Permutation, k: &Permutation) -> Permutation {
 // 
 // }
-// 
+
 fn identity(n: usize) -> Permutation {
     vec![]
 }
@@ -60,6 +67,7 @@ fn comp_test() {
     let a: Permutation = [[1,0],[2,3]].map(|x| x.to_vec()).to_vec();
     let b: Permutation = [[1,0],[1,0]].map(|x| x.to_vec()).to_vec();
     let c: Permutation = [[1,0]].map(|x| x.to_vec()).to_vec();
+    let d: Permutation = [[0,1,2,3,4]].map(|x| x.to_vec()).to_vec();
     let e: Permutation = vec![];
 
     let k = vec!['a','b','c'];
@@ -67,8 +75,16 @@ fn comp_test() {
     assert!(next_cyclic::<char>(1, &k) == 'c');
     assert!(next_cyclic::<char>(2, &k) == 'a');
 
-    // assert!(chase(1, &c) == 0);
-    // assert!(chase(0, &c) == 1);
+    assert!(chase(1, &c) == 0);
+    assert!(chase(0, &c) == 1);
+
+    assert!(chase(1, &a) == 0);
+    assert!(chase(0, &a) == 1);
+    assert!(dbg!(complete_cycle(0, &a)) == vec![0, 1]);
+
+    assert!(complete_cycle(0, &d) == vec![0, 1,2,3,4]);
+
     assert!(chase(0, &b) == 0);
-    // assert!(e == identity(4));
+    assert!(complete_cycle(0, &b) == vec![0]);
+    assert!(e == identity(4));
 }
