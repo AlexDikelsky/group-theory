@@ -3,7 +3,7 @@ use itertools::Itertools;
 use std::collections::HashMap;
 use std::iter;
 
-type Permutation = Vec<Vec<usize>>;
+pub type Permutation = Vec<Vec<usize>>;
 
 fn next_cyclic<T: Copy + Clone>(idx: usize, v: &[T]) -> T {
     if idx + 1 == v.len() {
@@ -32,9 +32,30 @@ fn complete_cycle(n: usize, sigma: &Permutation) -> Vec<usize> {
     }).take_while(|x| *x != n)).collect()
 }
 
-// fn comp(n: &Permutation, k: &Permutation) -> Permutation {
-// 
-// }
+fn min_is_first(n: &Vec<usize>) -> bool {
+    n.is_empty() || (n[0] == *n.iter().min().unwrap())
+}
+
+pub fn complete_linear(x: usize, n: &Vec<usize>) -> Vec<usize> {
+    let mut res = vec![n[x]];
+    let mut ptr = x;
+    while n[ptr] != x {
+        dbg!(&x, &n);
+        res.push(ptr);
+        ptr = n[x];
+    }
+    if res.len() < 2 {
+        vec![]
+    } else {
+        res
+    }
+}
+
+pub fn comp(n: &Permutation, k: &Permutation) -> Permutation {
+    let max = n.iter().flatten().count();
+    let mapped = (0..max).map(|x| chase(chase(x, &n), &k)).collect();
+    (0..max).map(|x| complete_linear(x, &mapped)).filter(|x| min_is_first(&x)).collect()
+}
 
 fn identity(n: usize) -> Permutation {
     vec![]
@@ -63,7 +84,7 @@ fn identity(n: usize) -> Permutation {
 // }
 // 
 #[test]
-fn comp_test() {
+fn cycle_test() {
     let a: Permutation = [[1,0],[2,3]].map(|x| x.to_vec()).to_vec();
     let b: Permutation = [[1,0],[1,0]].map(|x| x.to_vec()).to_vec();
     let c: Permutation = [[1,0]].map(|x| x.to_vec()).to_vec();
@@ -87,4 +108,29 @@ fn comp_test() {
     assert!(chase(0, &b) == 0);
     assert!(complete_cycle(0, &b) == vec![0]);
     assert!(e == identity(4));
+}
+
+#[test]
+fn comp_test() {
+    let a: Permutation = [[1,0],[2,3]].map(|x| x.to_vec()).to_vec();
+    let b: Permutation = [[1,0],[1,0]].map(|x| x.to_vec()).to_vec();
+    let c: Permutation = [[1,0]].map(|x| x.to_vec()).to_vec();
+    let d: Permutation = [[0,1,2,3,4]].map(|x| x.to_vec()).to_vec();
+    let e: Permutation = vec![];
+
+    let aaaaaa: Vec<usize> = [1,0,3,2].to_vec();
+    let bb: Vec<usize> = [0].to_vec();
+    let ii: Vec<usize> = [].to_vec();
+    assert!(complete_linear(3, &aaaaaa) == vec![2,3]);
+    assert!(complete_linear(1, &aaaaaa) == vec![0,1]);
+
+    assert!(complete_linear(0, &aaaaaa) == vec![0,1,2]);
+
+    assert!(complete_linear(0, &bb) == vec![]);
+
+    dbg!(comp(&d, &d));
+    assert!(false);
+
+    // assert!(comp(&c, &c) == vec![vec![0,1]]);
+    // assert!(&dbg!(comp(&a, &a)) == &vec![vec![0],vec![1],vec![2],vec![3]]);
 }
