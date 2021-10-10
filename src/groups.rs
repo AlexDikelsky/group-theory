@@ -9,8 +9,6 @@ pub trait GroupElement = Clone + Hash + Ord + Eq + Debug;
 
 // A group is a set and a binary operation
 // where we can tell if x == y for all x,y in G
-// I'm only considering groups where you can represent the elements as
-// nonnegative integers to make the code a bit cleaner
 pub struct Group<T: GroupElement> {
     pub set: Vec<T>,
     pub op: Box<dyn Fn(T, T) -> T>,

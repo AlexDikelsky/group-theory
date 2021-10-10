@@ -6,6 +6,7 @@ mod alternating;
 
 use crate::groups::Group;
 use crate::dihedral::dihedral;
+use crate::alternating::even_perms;
 
 fn main() {
     let z13c = Group {
@@ -57,4 +58,5 @@ fn main() {
     println!();
     println!("{:?}", dihedral(4));
     println!("{:?}", dihedral(4).orders());
+    even_perms(3);
 }

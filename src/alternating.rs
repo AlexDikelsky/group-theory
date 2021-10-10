@@ -2,19 +2,28 @@ use crate::groups::Group;
 use itertools::Itertools;
 use std::collections::HashMap;
 
-type Permutation = HashMap<usize, usize>;
+type Permutation = Vec<usize>;
 
 fn comp(n: &Permutation, k: &Permutation) -> Permutation {
-    n.iter().map(|(input, output)| (*input, k[&output])).collect()
+    n.iter().map(|input| k[*input]).collect()
 }
 
-fn even_perms(n: usize) -> Vec<Permutation> {
+fn identity(n: usize) -> Permutation {
+    (0..n).collect()
+}
 
+pub fn even_perms(n: usize) -> Vec<Permutation> {
+    let id = identity(n);
+    let transpositions: Vec<Vec<usize>> = (0..n).permutations(2).collect();
+    dbg!(&transpositions);
+    (0..(n/2)).map(|to_use| transpositions.iter().combinations(n * 2).fold(&id, comp)).collect()
+    vec![]
 }
 
 #[test]
 fn compp_test() {
-    let a: Permutation = [(0, 1), (1, 0), (2, 3), (3, 2)].iter().copied().collect();
-    let e: Permutation = [(0, 0), (1, 1), (2, 2), (3, 3)].iter().copied().collect();
+    let a: Permutation = [1, 0, 3, 2].to_vec();
+    let e: Permutation = [0, 1, 2, 3].to_vec();
     assert!(comp(&a, &a) == e);
+    assert!(e == identity(4));
 }
