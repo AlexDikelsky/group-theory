@@ -5,11 +5,15 @@ mod dihedral;
 mod groups;
 mod alternating;
 mod permutation;
+mod mult_mod_n;
+mod add_mod_n;
 
 use crate::groups::Group;
 use crate::dihedral::dihedral;
 use crate::permutation::permutation;
 use crate::alternating::alternating;
+use crate::mult_mod_n::multiplicitive;
+use crate::add_mod_n::additive;
 
 fn main() {
     // let z13c = Group {
