@@ -9,6 +9,7 @@ mod permutation;
 use crate::groups::Group;
 use crate::dihedral::dihedral;
 use crate::permutation::permutation;
+use crate::alternating::alternating;
 
 fn main() {
     // let z13c = Group {
@@ -43,25 +44,6 @@ fn main() {
     //     id: 'e',
     // };
 
-    // for iso in z12.isomorphisms(&z13c) {
-    //     println!("{:?}", iso);
-    // }
-    // println!();
-    // println!("{:?}", v4.isomorphisms(&z4));
-    // println!();
-    // for iso in v4.isomorphisms(&v4) {
-    //     println!("{:?}", iso);
-    // }
-    // println!();
-    // for iso in z4.isomorphisms(&z4) {
-    //     println!("{:?}", iso);
-    // }
-
-    // println!();
-    // println!("{:?}", dihedral(4));
-    // println!("{:?}", dihedral(4).orders());
-//    even_perms(2);
     
-    dbg!(permutation(3));
-    dbg!(permutation(3).orders());
+    dbg!(alternating(4).isomorphisms(&dihedral(6)));
 }

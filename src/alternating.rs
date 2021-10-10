@@ -3,6 +3,7 @@ use itertools::Itertools;
 use std::collections::HashMap;
 use std::iter;
 use crate::permutation::permutation;
+use crate::permutation::PermutationFlat;
 
 fn insert_sort_permutations(a: &Vec<usize>) -> usize {
     let mut a = a.clone();
@@ -14,17 +15,21 @@ fn insert_sort_permutations(a: &Vec<usize>) -> usize {
         };
         a.swap(i, s);
     }
-    dbg!(&a);
-    assert!(a.is_sorted());
     count
 }
 
-#[test]
-fn sort_test() {
-    let a = vec![0,1,2,3,5,4];
-    assert!(1 == insert_sort_permutations(&a));
-}
+pub fn alternating(n: usize) -> Group<PermutationFlat> {
+    let ps = permutation(n);
+    let set = ps.set.into_iter().filter(|p| {
+       insert_sort_permutations(p) % 2 == 0
+    }).collect();
 
+    Group {
+        set: set,
+        op: ps.op,
+        id: ps.id,
+    }
+}
 
 // pub type Permutation = Vec<Vec<usize>>;
 // 
@@ -157,3 +162,9 @@ fn sort_test() {
 //     // assert!(comp(&c, &c) == vec![vec![0,1]]);
 //     // assert!(&dbg!(comp(&a, &a)) == &vec![vec![0],vec![1],vec![2],vec![3]]);
 // }
+
+#[test]
+fn sort_test() {
+    let a = vec![0,1,2,3,5,4];
+    assert!(1 == insert_sort_permutations(&a));
+}
