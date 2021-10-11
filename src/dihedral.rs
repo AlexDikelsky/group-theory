@@ -35,7 +35,7 @@ pub fn dihedral(n: usize) -> Group<String> {
     let srs: Vec<String> = rs.clone().into_iter().map(|rs| rs + "s").collect();
     Group {
         set: rs.into_iter().chain(srs.into_iter()).collect(),
-        op: Box::new(move |x, y| simplify(x + &y, n)),
+        op: Box::new(move |x, y| simplify(x.to_string() + y, n)),
         id: "".to_string(),
     }
 }

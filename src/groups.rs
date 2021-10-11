@@ -11,7 +11,7 @@ pub trait GroupElement = Clone + Hash + Ord + Eq + Debug;
 // where we can tell if x == y for all x,y in G
 pub struct Group<T: GroupElement> {
     pub set: Vec<T>,
-    pub op: Box<dyn Fn(T, T) -> T>,
+    pub op: Box<dyn Fn(&T, &T) -> T>,
     pub id: T,
 }
 
@@ -30,7 +30,7 @@ impl<T: GroupElement> Group<T> {
         let order = |x: T| {
             (0..)
                 .scan(self.id.clone(), move |state, _| {
-                    *state = (self.op)(x.clone(), state.clone());
+                    *state = (self.op)(&x, state);
                     Some(state.clone())
                 })
                 .take_while(|x| *x != self.id)
@@ -90,5 +90,5 @@ fn is_isomorphism<T: GroupElement, U: GroupElement>(
     g1.set
         .iter()
         .cartesian_product(g1.set.iter())
-        .all(|(x, y)| biject[&(g1.op)(x.clone(), y.clone())] == (g2.op)(biject[x].clone(), biject[y].clone()))
+        .all(|(x, y)| biject[&(g1.op)(x, y)] == (g2.op)(&biject[x], &biject[y]))
 }

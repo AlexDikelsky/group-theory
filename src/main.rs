@@ -35,8 +35,8 @@ fn main() {
     let v4 = Group {
         set: vec!['a', 'b', 'c', 'e'],
         op: Box::new(|x, y| match (x, y) {
-            ('e', y) => y,
-            (x, 'e') => x,
+            ('e', y) => *y,
+            (x, 'e') => *x,
             ('a', 'b') => 'c',
             ('a', 'c') => 'b',
             ('b', 'a') => 'c',
@@ -53,7 +53,17 @@ fn main() {
     dbg!(cyclic(4).orders());
     dbg!(multiplicitive(8).orders());
     // dbg!(multiplicitive(8).isomorphisms(&v4));
-    for iso in multiplicitive(13).isomorphisms(&cyclic(12)) {
+    // for iso in multiplicitive(13).isomorphisms(&cyclic(12)) {
+    //     println!("{:?}", &iso); 
+    // }
+
+    // for iso in permutation(3).isomorphisms(&dihedral(3)) {
+    //     println!("{:?}", &iso); 
+    // }
+
+    let n = 4;
+    for iso in permutation(n).isomorphisms(&permutation(n)) {
         println!("{:?}", &iso); 
     }
+
 }

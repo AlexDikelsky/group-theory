@@ -7,8 +7,8 @@ fn gen_set(n: usize) -> Vec<PermutationFlat> {
     (0..n).permutations(n).collect()
 }
 
-fn comp(a: PermutationFlat, b: PermutationFlat) -> PermutationFlat {
-    a.into_iter().map(|c| b[c]).collect()
+fn comp(a: &PermutationFlat, b: &PermutationFlat) -> PermutationFlat {
+    a.iter().map(|c| b[*c]).collect()
 }
 
 pub fn permutation(n: usize) -> Group<PermutationFlat> {
