@@ -1,19 +1,21 @@
 #![feature(trait_alias)]
 #![feature(is_sorted)]
 
+mod alternating;
+mod cyclic;
 mod dihedral;
 mod groups;
-mod alternating;
-mod permutation;
 mod mult_mod_n;
-mod cyclic;
+mod permutation;
 
-use crate::groups::Group;
-use crate::dihedral::dihedral;
-use crate::permutation::permutation;
 use crate::alternating::alternating;
-use crate::mult_mod_n::multiplicitive;
 use crate::cyclic::cyclic;
+use crate::dihedral::dihedral;
+use crate::groups::Group;
+use crate::mult_mod_n::multiplicitive;
+use crate::permutation::permutation;
+
+use itertools::Itertools;
 
 fn main() {
     // let z13c = Group {
@@ -48,22 +50,26 @@ fn main() {
         id: 'e',
     };
 
-    
     // dbg!(alternating(4).isomorphisms(&dihedral(6)));
     dbg!(cyclic(4).orders());
     dbg!(multiplicitive(8).orders());
     // dbg!(multiplicitive(8).isomorphisms(&v4));
     // for iso in multiplicitive(13).isomorphisms(&cyclic(12)) {
-    //     println!("{:?}", &iso); 
+    //     println!("{:?}", &iso);
     // }
 
     // for iso in permutation(3).isomorphisms(&dihedral(3)) {
-    //     println!("{:?}", &iso); 
+    //     println!("{:?}", &iso);
     // }
 
-    let n = 4;
-    for iso in permutation(n).isomorphisms(&permutation(n)) {
-        println!("{:?}", &iso); 
-    }
+    let a5 = alternating(5);
+    let z2 = cyclic(2);
+    // let a5xz2 = Group {
+    //     set: a5.set.clone().into_iter().cartesian_product(z2.set.clone().into_iter()).collect(),
+    //     id: (a5.id.clone(), z2.id.clone()),
+    //     op: Box::new(move |(a1, b1), (a2, b2)| ((a5.op)(a1, a2), (z2.op)(b1, b2))),
+    // };
+    // dbg!(a5xz2.isomorphisms(&permutation(6)));
 
+    // dbg!(cyclic(2).product(z2));
 }
