@@ -63,13 +63,15 @@ fn main() {
     // }
 
     let a5 = alternating(5);
-    let z2 = cyclic(2);
+    let z2 = multiplicitive(8);
     // let a5xz2 = Group {
     //     set: a5.set.clone().into_iter().cartesian_product(z2.set.clone().into_iter()).collect(),
     //     id: (a5.id.clone(), z2.id.clone()),
     //     op: Box::new(move |(a1, b1), (a2, b2)| ((a5.op)(a1, a2), (z2.op)(b1, b2))),
     // };
     // dbg!(a5xz2.isomorphisms(&permutation(6)));
+
+    println!("{:?}", z2.order_lens());
 
     // dbg!(cyclic(2).product(z2));
 }

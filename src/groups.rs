@@ -43,6 +43,13 @@ impl<T: GroupElement> Group<T> {
             .collect()
     }
 
+    // (times it occurs, order)
+    pub fn order_lens(&self) -> Vec<(usize, usize)> {
+        let mut a: Vec<(usize, usize)> 
+            = self.orders().into_iter().map(|(n, _)| n).counts().into_iter().collect();
+        a.into_iter().map(|(a, b)| (b, a)).collect()
+    }
+
     pub fn product<U: GroupElement>(self, other: Group<U>) -> Group<(T, U)> {
         Group {
             set: self
