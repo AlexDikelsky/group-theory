@@ -15,7 +15,6 @@ use crate::dihedral::dihedral;
 use crate::groups::Group;
 use crate::mult_mod_n::multiplicitive;
 use crate::permutation::permutation;
-use crate::permutation::follow;
 use crate::permutation::cycles;
 
 use itertools::Itertools;
@@ -82,13 +81,12 @@ fn main() {
     // dbg!(h1.left_cosets(&permutation(3)));
     // dbg!(h1.right_cosets(&permutation(3)));
 
-    // dbg!(follow(0, &vec![0,1,2]));
-    // dbg!(follow(0, &vec![1,0,2]));
-    // dbg!(follow(2, &vec![0,1,2]));
-    // dbg!(follow(1, &vec![0,1,2]));
-    // dbg!(follow(1, &vec![1,2,0]));
-    dbg!(cycles(&vec![1,0,3,2]));
-    dbg!(cycles(&vec![0,1,2,3]));
+    let a4 = alternating(4);
+    let h = a4.gen_by(&vec![1,2,0,3]);
+    let a4 = alternating(4);
+    println!("{:?}", h.set.iter().map(cycles).collect_vec());
 
-    // dbg!(cyclic(2).product(z2));
+    println!("{:?}", h.left_cosets(&a4).iter().map(|z| z.iter().map(cycles).collect_vec()).collect_vec());
+    println!("{:?}", h.right_cosets(&a4).iter().map(|z| z.iter().map(cycles).collect_vec()).collect_vec());
+    println!("{}", h.left_cosets(&a4) == h.right_cosets(&a4));
 }

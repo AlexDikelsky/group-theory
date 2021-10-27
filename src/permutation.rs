@@ -20,7 +20,7 @@ pub fn permutation(n: usize) -> Group<PermutationFlat> {
     }
 }
 
-pub fn follow(i: usize, v: &PermutationFlat) -> Vec<usize> {
+fn follow(i: usize, v: &PermutationFlat) -> Vec<usize> {
     iter::once(i).chain(
     v.iter().scan(i, move |state, _| {
         *state = v[*state];

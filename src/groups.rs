@@ -5,6 +5,7 @@ use std::collections::HashSet;
 use std::fmt;
 use std::fmt::Debug;
 use std::hash::Hash;
+use std::iter::once;
 
 pub trait GroupElement = Clone + Hash + Ord + Eq + Debug + 'static;
 
@@ -80,6 +81,14 @@ impl<T: GroupElement> Group<T> {
             op: self.op,
             id: self.id,
         }
+    }
+
+    pub fn gen_by(self, a: &T) -> Group<T> {
+        let s = (0..).scan(a.clone(), |state, _| {
+            *state = ((self.op))(a, state);
+            Some(state.clone())
+        }).take_while(|x| x != a).chain(once(a.clone())).collect();
+        self.subgroup(s)
     }
 
     pub fn product<U: GroupElement>(self, other: Group<U>) -> Group<(T, U)> {

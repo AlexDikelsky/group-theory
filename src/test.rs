@@ -4,7 +4,6 @@ use crate::dihedral::dihedral;
 use crate::groups::Group;
 use crate::mult_mod_n::multiplicitive;
 use crate::permutation::permutation;
-use crate::permutation::follow;
 
 #[test]
 fn s() {
