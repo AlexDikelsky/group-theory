@@ -7,6 +7,7 @@ mod dihedral;
 mod groups;
 mod mult_mod_n;
 mod permutation;
+mod test;
 
 use crate::alternating::alternating;
 use crate::cyclic::cyclic;
@@ -62,19 +63,20 @@ fn main() {
     //     println!("{:?}", &iso);
     // }
 
-    let a5 = alternating(5);
-    let z2 = multiplicitive(8);
-    // let a5xz2 = Group {
-    //     set: a5.set.clone().into_iter().cartesian_product(z2.set.clone().into_iter()).collect(),
-    //     id: (a5.id.clone(), z2.id.clone()),
-    //     op: Box::new(move |(a1, b1), (a2, b2)| ((a5.op)(a1, a2), (z2.op)(b1, b2))),
-    // };
-    // dbg!(a5xz2.isomorphisms(&permutation(6)));
+    // let a5 = alternating(5);
+    // let z2 = multiplicitive(8);
+    // // let a5xz2 = Group {
+    // //     set: a5.set.clone().into_iter().cartesian_product(z2.set.clone().into_iter()).collect(),
+    // //     id: (a5.id.clone(), z2.id.clone()),
+    // //     op: Box::new(move |(a1, b1), (a2, b2)| ((a5.op)(a1, a2), (z2.op)(b1, b2))),
+    // // };
+    // // dbg!(a5xz2.isomorphisms(&permutation(6)));
 
-    println!("{:?}", z2.order_lens());
+    // println!("{:?}", z2.order_lens());
 
-    let z2z2z2 = permutation(5);
-    println!("{:?}", z2z2z2.order_lens());
+    // let z2z2z2 = permutation(5);
+    // println!("{:?}", z2z2z2.order_lens());
+
 
 
     // dbg!(cyclic(2).product(z2));

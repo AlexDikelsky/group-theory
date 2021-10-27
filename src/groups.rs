@@ -59,6 +59,17 @@ impl<T: GroupElement> Group<T> {
         (self.set).iter().map(|y| (self.op)(y, x)).collect()
     }
 
+    pub fn subgroup(self, s: Vec<T>) -> Group<T> {
+        let a: HashSet<&T> = s.iter().collect();
+        assert!(!s.is_empty());
+        assert!(s.iter().all(|x| s.iter().all(|y| a.contains(&(&(self.op))(x, y)))));
+        Group {
+            set: s,
+            op: self.op,
+            id: self.id,
+        }
+    }
+
 
     pub fn product<U: GroupElement>(self, other: Group<U>) -> Group<(T, U)> {
         Group {
