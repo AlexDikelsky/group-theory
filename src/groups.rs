@@ -1,6 +1,7 @@
 use itertools::Itertools;
 use std::cmp::Ord;
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::fmt;
 use std::fmt::Debug;
 use std::hash::Hash;
@@ -49,6 +50,15 @@ impl<T: GroupElement> Group<T> {
             = self.orders().into_iter().map(|(n, _)| n).counts().into_iter().collect();
         a.into_iter().map(|(a, b)| (b, a)).collect()
     }
+
+    pub fn left_coset(&self, x: &T) -> HashSet<T> {
+        (self.set).iter().map(|y| (self.op)(x, y)).collect()
+    }
+
+    pub fn right_coset(&self, x: &T) -> HashSet<T> {
+        (self.set).iter().map(|y| (self.op)(y, x)).collect()
+    }
+
 
     pub fn product<U: GroupElement>(self, other: Group<U>) -> Group<(T, U)> {
         Group {

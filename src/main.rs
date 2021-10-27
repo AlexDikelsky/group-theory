@@ -73,5 +73,9 @@ fn main() {
 
     println!("{:?}", z2.order_lens());
 
+    let z2z2z2 = permutation(5);
+    println!("{:?}", z2z2z2.order_lens());
+
+
     // dbg!(cyclic(2).product(z2));
 }
