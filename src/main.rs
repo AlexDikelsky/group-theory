@@ -15,6 +15,8 @@ use crate::dihedral::dihedral;
 use crate::groups::Group;
 use crate::mult_mod_n::multiplicitive;
 use crate::permutation::permutation;
+use crate::permutation::follow;
+use crate::permutation::cycles;
 
 use itertools::Itertools;
 
@@ -75,9 +77,18 @@ fn main() {
     // let z2z2z2 = permutation(5);
     // println!("{:?}", z2z2z2.order_lens());
 
-    let s3 = permutation(3);
-    let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
-    dbg!(h1.left_cosets(permutation(3)));
+    // let s3 = permutation(3);
+    // let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
+    // dbg!(h1.left_cosets(&permutation(3)));
+    // dbg!(h1.right_cosets(&permutation(3)));
+
+    // dbg!(follow(0, &vec![0,1,2]));
+    // dbg!(follow(0, &vec![1,0,2]));
+    // dbg!(follow(2, &vec![0,1,2]));
+    // dbg!(follow(1, &vec![0,1,2]));
+    // dbg!(follow(1, &vec![1,2,0]));
+    dbg!(cycles(&vec![1,0,3,2]));
+    dbg!(cycles(&vec![0,1,2,3]));
 
     // dbg!(cyclic(2).product(z2));
 }

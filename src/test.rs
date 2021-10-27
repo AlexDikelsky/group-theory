@@ -4,6 +4,7 @@ use crate::dihedral::dihedral;
 use crate::groups::Group;
 use crate::mult_mod_n::multiplicitive;
 use crate::permutation::permutation;
+use crate::permutation::follow;
 
 #[test]
 fn s() {
@@ -22,4 +23,12 @@ fn s2() {
     // not a subgroup
     let k = ["", "rr", "rrr"].iter().map(|x| x.to_string()).collect();
     let v = d4.subgroup(k);
+}
+
+#[test]
+fn s3() {
+    let s3 = permutation(3);
+    let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
+    let s3 = permutation(3);
+    assert!(h1.left_cosets(&s3) != h1.right_cosets(&s3));
 }

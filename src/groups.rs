@@ -57,8 +57,18 @@ impl<T: GroupElement> Group<T> {
         k
     }
 
-    pub fn left_cosets(&self, g: Group<T>) -> HashSet<Vec<T>> {
+    pub fn left_cosets(&self, g: &Group<T>) -> HashSet<Vec<T>> {
         g.set.iter().map(|x| self.left_coset(x)).collect()
+    }
+
+    pub fn right_coset(&self, x: &T) -> Vec<T> {
+        let mut k: Vec<T> = (self.set).iter().map(|y| (self.op)(y, x)).collect();
+        k.sort();
+        k
+    }
+
+    pub fn right_cosets(&self, g: &Group<T>) -> HashSet<Vec<T>> {
+        g.set.iter().map(|x| self.right_coset(x)).collect()
     }
 
     pub fn subgroup(self, s: Vec<T>) -> Group<T> {
