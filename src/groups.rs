@@ -51,12 +51,14 @@ impl<T: GroupElement> Group<T> {
         a.into_iter().map(|(a, b)| (b, a)).collect()
     }
 
-    pub fn left_coset(&self, x: &T) -> HashSet<T> {
-        (self.set).iter().map(|y| (self.op)(x, y)).collect()
+    pub fn left_coset(&self, x: &T) -> Vec<T> {
+        let mut k: Vec<T> = (self.set).iter().map(|y| (self.op)(x, y)).collect();
+        k.sort();
+        k
     }
 
-    pub fn right_coset(&self, x: &T) -> HashSet<T> {
-        (self.set).iter().map(|y| (self.op)(y, x)).collect()
+    pub fn left_cosets(&self, g: Group<T>) -> HashSet<Vec<T>> {
+        g.set.iter().map(|x| self.left_coset(x)).collect()
     }
 
     pub fn subgroup(self, s: Vec<T>) -> Group<T> {
@@ -69,7 +71,6 @@ impl<T: GroupElement> Group<T> {
             id: self.id,
         }
     }
-
 
     pub fn product<U: GroupElement>(self, other: Group<U>) -> Group<(T, U)> {
         Group {

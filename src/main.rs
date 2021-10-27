@@ -52,8 +52,6 @@ fn main() {
     };
 
     // dbg!(alternating(4).isomorphisms(&dihedral(6)));
-    dbg!(cyclic(4).orders());
-    dbg!(multiplicitive(8).orders());
     // dbg!(multiplicitive(8).isomorphisms(&v4));
     // for iso in multiplicitive(13).isomorphisms(&cyclic(12)) {
     //     println!("{:?}", &iso);
@@ -77,7 +75,9 @@ fn main() {
     // let z2z2z2 = permutation(5);
     // println!("{:?}", z2z2z2.order_lens());
 
-
+    let s3 = permutation(3);
+    let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
+    dbg!(h1.left_cosets(permutation(3)));
 
     // dbg!(cyclic(2).product(z2));
 }
