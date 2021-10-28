@@ -31,3 +31,18 @@ fn s3() {
     let s3 = permutation(3);
     assert!(h1.left_cosets(&s3) != h1.right_cosets(&s3));
 }
+
+#[test]
+fn a() {
+    let g = cyclic(12);
+    assert!(g.is_cyclic());
+    assert!(g.is_abelian());
+
+    let g = dihedral(4);
+    assert!( !g.is_cyclic());
+    assert!( !g.is_abelian());
+
+    let g = cyclic(2).product(cyclic(2));
+    assert!( !g.is_cyclic());
+    assert!(g.is_abelian());
+}

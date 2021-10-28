@@ -89,4 +89,16 @@ fn main() {
     println!("{:?}", h.left_cosets(&a4).iter().map(|z| z.iter().map(cycles).collect_vec()).collect_vec());
     println!("{:?}", h.right_cosets(&a4).iter().map(|z| z.iter().map(cycles).collect_vec()).collect_vec());
     println!("{}", h.left_cosets(&a4) == h.right_cosets(&a4));
+
+    println!("{:?}", permutation(4).product(cyclic(2)).order_lens());
+    println!("{:?}", alternating(5).order_lens());
+
+    let newv4 = cyclic(4).product(cyclic(4)).subgroup(vec![(0,0),(2,0),(0,2),(2,2)]);
+    dbg!(!newv4.isomorphisms(&v4).is_empty());
+
+
+    let twenty = cyclic(5).product(cyclic(2).product(cyclic(2)));
+    dbg!(twenty.set.len());
+    dbg!(twenty.is_abelian());
+    dbg!(twenty.is_cyclic());
 }

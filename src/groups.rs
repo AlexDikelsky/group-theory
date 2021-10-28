@@ -91,6 +91,15 @@ impl<T: GroupElement> Group<T> {
         self.subgroup(s)
     }
 
+    pub fn is_abelian(&self) -> bool {
+        self.set.iter().all(|x| self.set.iter().all(|y| (&(self.op))(x, y) == (&(self.op))(y, x)))
+    }
+
+    pub fn is_cyclic(&self) -> bool {
+        let v = self.set.len();
+        self.orders().into_iter().find(|(x, _)| *x == v).is_some()
+    }
+
     pub fn product<U: GroupElement>(self, other: Group<U>) -> Group<(T, U)> {
         Group {
             set: self
