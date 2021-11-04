@@ -78,27 +78,12 @@ fn main() {
 
     // let s3 = permutation(3);
     // let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
-    // dbg!(h1.left_cosets(&permutation(3)));
-    // dbg!(h1.right_cosets(&permutation(3)));
-
-    let a4 = alternating(4);
-    let h = a4.gen_by(&vec![1,2,0,3]);
-    let a4 = alternating(4);
-    println!("{:?}", h.set.iter().map(cycles).collect_vec());
-
-    println!("{:?}", h.left_cosets(&a4).iter().map(|z| z.iter().map(cycles).collect_vec()).collect_vec());
-    println!("{:?}", h.right_cosets(&a4).iter().map(|z| z.iter().map(cycles).collect_vec()).collect_vec());
-    println!("{}", h.left_cosets(&a4) == h.right_cosets(&a4));
-
-    println!("{:?}", permutation(4).product(cyclic(2)).order_lens());
-    println!("{:?}", alternating(5).order_lens());
-
-    let newv4 = cyclic(4).product(cyclic(4)).subgroup(vec![(0,0),(2,0),(0,2),(2,2)]);
-    dbg!(!newv4.isomorphisms(&v4).is_empty());
+    let g = dihedral(4);
+    let h = g.subgroup(["", "r", "rr", "rrr"].iter().map(|x| x.to_string()).collect_vec());
+    let g = dihedral(4);
+    dbg!(h.set.len());
+    dbg!(h.left_cosets(&g) == h.right_cosets(&g));
 
 
-    let twenty = cyclic(5).product(cyclic(2).product(cyclic(2)));
-    dbg!(twenty.set.len());
-    dbg!(twenty.is_abelian());
-    dbg!(twenty.is_cyclic());
+    
 }

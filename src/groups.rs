@@ -152,7 +152,12 @@ impl<T: GroupElement> Group<T> {
             vec![]
         }
     }
+
+    fn is_normal_subgroup(&self, g: Group<T>) -> bool {
+        self.left_cosets(&g) == self.right_cosets(&g)
+    }
 }
+
 
 fn is_isomorphism<T: GroupElement, U: GroupElement>(
     biject: &HashMap<T, U>,
