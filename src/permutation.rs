@@ -21,20 +21,28 @@ pub fn permutation(n: usize) -> Group<PermutationFlat> {
 }
 
 fn follow(i: usize, v: &PermutationFlat) -> Vec<usize> {
-    iter::once(i).chain(
-    v.iter().scan(i, move |state, _| {
-        *state = v[*state];
-        Some(*state)
-    }).take_while(|x| *x != i)).collect()
+    iter::once(i)
+        .chain(
+            v.iter()
+                .scan(i, move |state, _| {
+                    *state = v[*state];
+                    Some(*state)
+                })
+                .take_while(|x| *x != i),
+        )
+        .collect()
 }
 
 pub fn cycles(v: &PermutationFlat) -> Vec<Vec<usize>> {
-    v.iter().copied().filter_map(|x| {
-        let k = follow(x, v);
-        if *k.iter().min().unwrap_or(&(k[0] + 3)) == k[0] && k.len() != 1 {
-            Some(k)
-        } else {
-            None
-        }
-    }).collect()
+    v.iter()
+        .copied()
+        .filter_map(|x| {
+            let k = follow(x, v);
+            if *k.iter().min().unwrap_or(&(k[0] + 3)) == k[0] && k.len() != 1 {
+                Some(k)
+            } else {
+                None
+            }
+        })
+        .collect()
 }

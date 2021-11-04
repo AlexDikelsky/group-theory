@@ -47,8 +47,13 @@ impl<T: GroupElement> Group<T> {
 
     // (times it occurs, order)
     pub fn order_lens(&self) -> Vec<(usize, usize)> {
-        let mut a: Vec<(usize, usize)> 
-            = self.orders().into_iter().map(|(n, _)| n).counts().into_iter().collect();
+        let mut a: Vec<(usize, usize)> = self
+            .orders()
+            .into_iter()
+            .map(|(n, _)| n)
+            .counts()
+            .into_iter()
+            .collect();
         a.into_iter().map(|(a, b)| (b, a)).collect()
     }
 
@@ -75,7 +80,9 @@ impl<T: GroupElement> Group<T> {
     pub fn subgroup(self, s: Vec<T>) -> Group<T> {
         let a: HashSet<&T> = s.iter().collect();
         assert!(!s.is_empty());
-        assert!(s.iter().all(|x| s.iter().all(|y| a.contains(&(&(self.op))(x, y)))));
+        assert!(s
+            .iter()
+            .all(|x| s.iter().all(|y| a.contains(&(&(self.op))(x, y)))));
         Group {
             set: s,
             op: self.op,
@@ -84,15 +91,23 @@ impl<T: GroupElement> Group<T> {
     }
 
     pub fn gen_by(self, a: &T) -> Group<T> {
-        let s = (0..).scan(a.clone(), |state, _| {
-            *state = ((self.op))(a, state);
-            Some(state.clone())
-        }).take_while(|x| x != a).chain(once(a.clone())).collect();
+        let s = (0..)
+            .scan(a.clone(), |state, _| {
+                *state = (self.op)(a, state);
+                Some(state.clone())
+            })
+            .take_while(|x| x != a)
+            .chain(once(a.clone()))
+            .collect();
         self.subgroup(s)
     }
 
     pub fn is_abelian(&self) -> bool {
-        self.set.iter().all(|x| self.set.iter().all(|y| (&(self.op))(x, y) == (&(self.op))(y, x)))
+        self.set.iter().all(|x| {
+            self.set
+                .iter()
+                .all(|y| (&(self.op))(x, y) == (&(self.op))(y, x))
+        })
     }
 
     pub fn is_cyclic(&self) -> bool {
@@ -136,7 +151,7 @@ impl<T: GroupElement> Group<T> {
                 .map(|x| poss_for_order_n(*x).into_iter()) // Find the bijections for that order
                 .multi_cartesian_product() // Expand out the bijections
                 .map(|bij| bij.into_iter().flatten().collect())
-                .filter(|x| is_isomorphism(x, self, other)) // Keep only the isomorphisms
+                .filter(|x| is_homomorphism(x, self, other)) // Keep only the isomorphisms
                 .collect();
 
             // This sorts the isomorphisms nicely
@@ -153,13 +168,23 @@ impl<T: GroupElement> Group<T> {
         }
     }
 
-    fn is_normal_subgroup(&self, g: Group<T>) -> bool {
+    pub fn is_normal_subgroup(&self, g: Group<T>) -> bool {
         self.left_cosets(&g) == self.right_cosets(&g)
+    }
+
+    pub fn homomorphism_to<U: GroupElement>(
+        &self,
+        other: Group<U>,
+        f: Box<dyn Fn(&T) -> U>,
+    ) -> bool {
+        self.set
+            .iter()
+            .cartesian_product(self.set.iter())
+            .all(|(x, y)| f(&(self.op)(x, y)) == (other.op)(&f(x), &f(y)))
     }
 }
 
-
-fn is_isomorphism<T: GroupElement, U: GroupElement>(
+fn is_homomorphism<T: GroupElement, U: GroupElement>(
     biject: &HashMap<T, U>,
     g1: &Group<T>,
     g2: &Group<U>,

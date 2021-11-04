@@ -14,8 +14,8 @@ use crate::cyclic::cyclic;
 use crate::dihedral::dihedral;
 use crate::groups::Group;
 use crate::mult_mod_n::multiplicitive;
-use crate::permutation::permutation;
 use crate::permutation::cycles;
+use crate::permutation::permutation;
 
 use itertools::Itertools;
 
@@ -78,12 +78,4 @@ fn main() {
 
     // let s3 = permutation(3);
     // let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
-    let g = dihedral(4);
-    let h = g.subgroup(["", "r", "rr", "rrr"].iter().map(|x| x.to_string()).collect_vec());
-    let g = dihedral(4);
-    dbg!(h.set.len());
-    dbg!(h.left_cosets(&g) == h.right_cosets(&g));
-
-
-    
 }

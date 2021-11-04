@@ -9,7 +9,10 @@ use crate::permutation::permutation;
 fn s() {
     let d4 = dihedral(4);
     assert!(d4.set.len() == 8);
-    let k = ["", "r", "rr", "rrr"].iter().map(|x| x.to_string()).collect();
+    let k = ["", "r", "rr", "rrr"]
+        .iter()
+        .map(|x| x.to_string())
+        .collect();
     let v = d4.subgroup(k);
     assert!(v.set.len() == 4);
 }
@@ -27,7 +30,7 @@ fn s2() {
 #[test]
 fn s3() {
     let s3 = permutation(3);
-    let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
+    let h1 = s3.subgroup(vec![vec![1, 0, 2], vec![0, 1, 2]]);
     let s3 = permutation(3);
     assert!(h1.left_cosets(&s3) != h1.right_cosets(&s3));
 }
@@ -39,10 +42,10 @@ fn a() {
     assert!(g.is_abelian());
 
     let g = dihedral(4);
-    assert!( !g.is_cyclic());
-    assert!( !g.is_abelian());
+    assert!(!g.is_cyclic());
+    assert!(!g.is_abelian());
 
     let g = cyclic(2).product(cyclic(2));
-    assert!( !g.is_cyclic());
+    assert!(!g.is_cyclic());
     assert!(g.is_abelian());
 }
