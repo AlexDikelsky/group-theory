@@ -1,5 +1,6 @@
 #![feature(trait_alias)]
 #![feature(is_sorted)]
+#![allow(unused)]
 
 mod alternating;
 mod cyclic;
@@ -8,6 +9,7 @@ mod groups;
 mod mult_mod_n;
 mod permutation;
 mod test;
+mod cosets;
 
 use crate::alternating::alternating;
 use crate::cyclic::cyclic;
@@ -78,4 +80,16 @@ fn main() {
 
     // let s3 = permutation(3);
     // let h1 = s3.subgroup(vec![vec![1,0,2], vec![0,1,2]]);
+
+    let g = dihedral(4);
+    let n = g.gen_by(&"rr".to_string());
+    let g = dihedral(4);
+    dbg!(g.quotient(n));
+}
+
+fn m(s: &String) -> usize {
+    match s.contains("s") {
+        true => 1,
+        false => 0,
+    }
 }

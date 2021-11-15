@@ -6,6 +6,7 @@ use std::fmt;
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::iter::once;
+use crate::cosets::Coset;
 
 pub trait GroupElement = Clone + Hash + Ord + Eq + Debug + 'static;
 
@@ -75,6 +76,14 @@ impl<T: GroupElement> Group<T> {
 
     pub fn right_cosets(&self, g: &Group<T>) -> HashSet<Vec<T>> {
         g.set.iter().map(|x| self.right_coset(x)).collect()
+    }
+
+    pub fn is_subgroup_of(&self, super_g: &Group<T>) -> bool {
+        let a: HashSet<&T> = super_g.set.iter().collect();
+        self
+            .set
+            .iter()
+            .all(|x| self.set.iter().all(|y| a.contains(&(&(super_g.op))(x, y))))
     }
 
     pub fn subgroup(self, s: Vec<T>) -> Group<T> {
@@ -168,19 +177,53 @@ impl<T: GroupElement> Group<T> {
         }
     }
 
-    pub fn is_normal_subgroup(&self, g: Group<T>) -> bool {
-        self.left_cosets(&g) == self.right_cosets(&g)
+    pub fn is_normal_subgroup_of(&self, g: &Group<T>) -> bool {
+        self.is_subgroup_of(&g) && (self.left_cosets(&g) == self.right_cosets(&g))
     }
 
     pub fn homomorphism_to<U: GroupElement>(
         &self,
-        other: Group<U>,
+        other: &Group<U>,
         f: Box<dyn Fn(&T) -> U>,
     ) -> bool {
         self.set
             .iter()
             .cartesian_product(self.set.iter())
             .all(|(x, y)| f(&(self.op)(x, y)) == (other.op)(&f(x), &f(y)))
+    }
+
+    pub fn quotient(self, normal: Group<T>) -> Group<Coset<T>> {
+        assert!(&normal.is_normal_subgroup_of(&self));
+
+        let cosets: Vec<Coset<T>> = normal.left_cosets(&self).into_iter().map(|mut coset| {
+            coset.sort_unstable();
+            Coset {
+                elem: coset[0].clone(),
+                full_set: coset.into_iter().collect(),
+            }
+        }).collect_vec();
+
+        let mut ident_coset_elems = normal.left_coset(&self.id).clone();
+        ident_coset_elems.sort();
+        let ident_coset = Coset {
+            elem: ident_coset_elems[0].clone(),
+            full_set: ident_coset_elems.into_iter().collect()
+        };
+
+        let haystack = cosets.clone();
+
+        let combine = move |x: &Coset<T>, y: &Coset<T>| -> Coset<T> {
+            let needle = (&normal.op)(&x.elem, &y.elem);
+            haystack.iter().find(|coset| {
+                coset.full_set.contains(&needle)
+            }).unwrap().clone()
+        };
+
+        Group {
+            set: cosets,
+            op: Box::new(combine),
+            id: ident_coset,
+        }
     }
 }
 

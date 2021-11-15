@@ -49,3 +49,12 @@ fn a() {
     assert!(!g.is_cyclic());
     assert!(g.is_abelian());
 }
+
+#[test]
+fn asdf() {
+    let g = dihedral(4);
+    let n = g.gen_by(&"rr".to_string());
+    let g = dihedral(4);
+    assert!(n.is_normal_subgroup_of(&g));
+    assert!(!g.is_normal_subgroup_of(&n));
+}
